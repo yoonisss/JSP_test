@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app>
+	<security-role>
+		<description></description >
+		<role-name>admin</role-name>
+	</security-role>
+	<security-constraint>
+		<display-name>WebMarket Security</display-name>
+		<web-resource-collection>
+			<web-resource-name>WebMarket</web-resource-name>
+			<description></description>
+					
+			<url-pattern>/addProduct.jsp</url-pattern>
+			<url-pattern>/editProduct.jsp</url-pattern>
+			
+		</web-resource-collection>
+		<auth-constraint>
+			<description>권한 관리자명</description>
+			<role-name>admin</role-name>
+		</auth-constraint>
+	</security-constraint>
+	<login-config>
+		<auth-method>FORM</auth-method>
+		<form-login-config>
+			<form-login-page>/login.jsp</form-login-page>
+			<form-error-page>/login_failed.jsp</form-error-page>
+		</form-login-config>
+	</login-config>
+	
+	<error-page>
+		<error-code>404</error-code>
+		<location>/exceptionNoPage.jsp</location>
+	</error-page>	
+	
+	<!-- 콘솔 상에 해당 로그를 출력하는 설정. -->
+	<filter>
+		<filter-name>LogFilter</filter-name>
+		<filter-class>filter.LogFilter</filter-class>     
+	</filter>
+	<filter-mapping>
+		<filter-name>LogFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>	
+	
+	<!-- 파일 상에 해당 로그를 출력하는 설정. -->
+	<filter>
+		<filter-name>LogFileFilter</filter-name>
+		<filter-class>filter.LogFileFilter</filter-class>
+		<init-param>
+			<param-name>filename</param-name>
+			<param-value>c:\\logs\\webmarket.log</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>LogFileFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+	<servlet>
+		<servlet-name>BoardController</servlet-name>
+		<servlet-class>mvc.controller.BoardController</servlet-class>
+	</servlet>
+
+    <servlet-mapping>
+		<servlet-name>BoardController</servlet-name>
+		<url-pattern>*.do</url-pattern>
+	</servlet-mapping>
+	
+	<!-- 해당 경로에서 / 로 하면, css 상대 경로를 못찾는 현상이 있고,->
+	해당 경로에서 / 로 하면, 서버 쪽 web.xml에서 디폴트 경로로 가고.
+	
+	해당 경로에서 *.do 로 하면, css 상대 경로를 못찾는 현상이 없고,
+	BoardController 적용 부분을 주석해서 -> 결과는 정상 작동.
+	
+	디폴트 서블릿이 하는 역할? 기능?
+	->기본 .jsp 이면, 해당 매핑 경로가 있어서 받아서 처리 서버쪽 web.xml
+	-> .jsp 파일이 아니라도, 해당 매핑 경로를 디폴트가 받아서 처리 서버쪽 web.xml
+	예).css , .do : 프로젝트 내에 web.xml에서 서블릿 관련 설정이 없다면.
+	
+	디폴트 서블릿으로 처리한다면, css 파일을 읽지 못한다.(상대경로 일 때.)
+	->  -->
+		
+</web-app>
