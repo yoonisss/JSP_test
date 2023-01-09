@@ -11,7 +11,7 @@
 	driver="com.mysql.jdbc.Driver" user="root" password="k404" />
 
 
-  <!--  디비에서 입력한 값 id로 검색 -->
+  <!--  디비에서 입력한 값이 있는지 id로 검색 -->
 <sql:query dataSource="${dataSource}" var="resultSet">
    SELECT * FROM MEMBER WHERE ID=?  
    <sql:param value="<%=id%>" />
@@ -33,6 +33,7 @@
 	<br>
 	<div class="container" align="center">
 		<h6 class="alert alert-danger">
+		  <!--  result 값에 따라 문장 출력 -->
 			<c:if test="${result == 0}"> 아이디를 사용할 수 있습니다 </c:if>
 			<c:if test="${result == 1}"> 이미 사용 중인 아이디 입니다	</c:if>
 		</h6>
